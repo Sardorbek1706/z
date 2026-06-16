@@ -5,17 +5,30 @@ const heartLoader = document.querySelector(".cssload-main");
 const yesBtn = document.querySelector(".js-yes-btn");
 const noBtn = document.querySelector(".js-no-btn");
 
-// /change the postion of no button
-noBtn.addEventListener("mouseover", () => {
-  const newX = Math.floor(Math.random() * questionContainer.offsetWidth);
-  const newY = Math.floor(Math.random() * questionContainer.offsetWidth);
-
+// change the position of no button on hover and touch
+function moveNoButton() {
+  const containerRect = questionContainer.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+  
+  let newX = Math.random() * (containerRect.width - btnRect.width);
+  let newY = Math.random() * (containerRect.height - btnRect.height);
+  
+  // Constrain to container
+  newX = Math.max(0, Math.min(newX, containerRect.width - 100));
+  newY = Math.max(0, Math.min(newY, containerRect.height - 50));
+  
+  noBtn.style.position = "absolute";
   noBtn.style.left = `${newX}px`;
   noBtn.style.top = `${newY}px`;
+}
+
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveNoButton();
 });
 
 // yes button functionality
-
 yesBtn.addEventListener("click", () => {
   questionContainer.style.display = "none";
   heartLoader.style.display = "inherit";
